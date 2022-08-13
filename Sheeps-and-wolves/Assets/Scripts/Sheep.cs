@@ -11,11 +11,12 @@ public enum SheepState
 
 public class Sheep : MonoBehaviour
 {
-    [SerializeField] private int playerFleeRange = 10;
+    [SerializeField] private int playerFleeRange = 5;
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private Transform player;
     [SerializeField] private int speed = 10;
     [SerializeField] private int rotationSpeed = 90;
+    [SerializeField] private int targetAngleSpan = 10;
     private SheepState state = SheepState.Idle;
 
     void Start()
@@ -27,27 +28,44 @@ public class Sheep : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector2 targetLocation = player.position - transform.position;
-        targetLocation.Normalize();
 
-        float angle = Mathf.Atan2(targetLocation.y, targetLocation.x) / Mathf.PI * 180;
-        if (angle < 0)
-        {
-            angle += 360;
-        }
-        Debug.Log(angle);
-        /*if ((transform.position - player.position).sqrMagnitude <= playerFleeRange * playerFleeRange)
+        Vector2 playerDirection = player.position - transform.position;
+        float relativePlayerAngularPosition = Mathf.Atan2(playerDirection.y, playerDirection.x) / Mathf.PI * 180;
+        relativePlayerAngularPosition = Utils.Instance.normalise(relativePlayerAngularPosition);
+        float targetAngle = relativePlayerAngularPosition + 180;
+        targetAngle = Utils.Instance.normalise(targetAngle);
+        Quaternion targetRotation = new Quaternion(0, 0, targetAngle, 0);
+
+        Debug.Log((transform.position - player.position).magnitude);
+        if ((transform.position - player.position).magnitude <= playerFleeRange && state != SheepState.Fleeing)
         {
             state = SheepState.Fleeing;
-        } else
+        } else if ((transform.position - player.position).magnitude > playerFleeRange)
         {
+            // stops the sheep at the end of the flee
+            if (state != SheepState.Idle)
+            {
+                rigidBody.velocity = Vector3.zero;
+            }
             state = SheepState.Idle;
         }
 
         if (state == SheepState.Fleeing)
         {
-            rigidBody.AddRelativeForce(Vector2.right * speed * Time.deltaTime);
-            transform.rotation = player.rotation;
-        } */
+            float upperBound = relativePlayerAngularPosition + 180 + targetAngleSpan;
+            float lowerBound = relativePlayerAngularPosition + 180 - targetAngleSpan;
+            Utils.Instance.normalise(upperBound);
+            Utils.Instance.normalise(lowerBound);
+
+
+            if  (transform.rotation.eulerAngles.z <= upperBound || transform.rotation.eulerAngles.z >= lowerBound)
+            {
+                float rotationStep = rotationSpeed * Time.deltaTime;
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationStep);
+                rigidBody.AddRelativeForce(Vector2.right * speed * 0.5f * Time.deltaTime);
+            } else {
+                rigidBody.AddRelativeForce(Vector2.right * speed * Time.deltaTime);
+            }
+        }
     }
 }
