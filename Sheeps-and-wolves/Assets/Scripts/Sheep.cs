@@ -36,7 +36,6 @@ public class Sheep : MonoBehaviour
         targetAngle = Utils.Instance.normalise(targetAngle);
         Quaternion targetRotation = new Quaternion(0, 0, targetAngle, 0);
 
-        Debug.Log((transform.position - player.position).magnitude);
         if ((transform.position - player.position).magnitude <= playerFleeRange && state != SheepState.Fleeing)
         {
             state = SheepState.Fleeing;
@@ -62,9 +61,9 @@ public class Sheep : MonoBehaviour
             {
                 float rotationStep = rotationSpeed * Time.deltaTime;
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationStep);
-                rigidBody.AddRelativeForce(Vector2.right * speed * 0.5f * Time.deltaTime);
+                rigidBody.AddRelativeForce(Vector2.up * speed * 0.5f * Time.deltaTime);
             } else {
-                rigidBody.AddRelativeForce(Vector2.right * speed * Time.deltaTime);
+                rigidBody.AddRelativeForce(Vector2.up * speed * Time.deltaTime);
             }
         }
     }
