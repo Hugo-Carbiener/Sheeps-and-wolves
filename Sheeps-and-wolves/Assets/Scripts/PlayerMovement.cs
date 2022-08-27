@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         // get movement data
-        direction = getDirection(transform.eulerAngles.z + 90);
+        direction = Utils.Instance.getDirection(transform.eulerAngles.z + 90);
         currentSpeed = rigidBody.velocity.magnitude;
 
         // speed control 
@@ -80,10 +80,5 @@ public class PlayerMovement : MonoBehaviour
 
         // apply speed
         rigidBody.velocity = direction * currentSpeed;
-    }
-
-    private Vector2 getDirection(float degAngle)
-    {
-        return new Vector2(Mathf.Cos(degAngle / 180 * Mathf.PI), Mathf.Sin(degAngle / 180 * Mathf.PI));
     }
 }
