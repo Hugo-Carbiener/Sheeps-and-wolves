@@ -15,17 +15,24 @@ public class Utils : MonoBehaviour
         Instance = this;
     }
 
-    // normalize an angle if out of bounds
-    public float normalise(float angle)
+    // angle utils
+    public Vector2 getDirection(float degAngle)
     {
-        if (angle < 0)
+        return new Vector2(Mathf.Cos(degAngle / 180 * Mathf.PI), Mathf.Sin(degAngle / 180 * Mathf.PI));
+    }
+
+    // normalize an angle if out of bounds
+
+    public float normalise(float degAngle)
+    {
+        if (degAngle < 0)
         {
-            angle += 360;
+            degAngle += 360;
         }
-        if (angle >= 360)
+        if (degAngle >= 360)
         {
-            angle -= 360;
+            degAngle -= 360;
         }
-        return angle;
+        return degAngle;
     }
 }

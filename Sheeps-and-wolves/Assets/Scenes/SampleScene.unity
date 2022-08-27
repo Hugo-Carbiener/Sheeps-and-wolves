@@ -598,8 +598,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 1704863509}
-  maxMovementSpeeds: {x: 1, y: 2}
-  rotationSpeeds: {x: 90, y: 135}
+  maxMovementSpeeds: {x: 2, y: 4}
+  rotationSpeeds: {x: 90, y: 100}
 --- !u!50 &1704863509
 Rigidbody2D:
   serializedVersion: 4
