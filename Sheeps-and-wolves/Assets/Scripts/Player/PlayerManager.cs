@@ -16,5 +16,6 @@ public class PlayerManager : MonoBehaviour
     public Vector2 getDirection() { return this.direction; }
     public void setDirection(Vector2 dir) { direction = dir; }
 
+    public float getRotationAngle() { return transform.eulerAngles.z; }
 
 }
