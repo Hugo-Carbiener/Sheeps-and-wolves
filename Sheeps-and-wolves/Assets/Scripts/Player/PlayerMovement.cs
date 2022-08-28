@@ -5,80 +5,79 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Components")]
+    [SerializeField] private PlayerManager player;
     [SerializeField] private Rigidbody2D rigidBody;
     [Header("Speeds")]
     [SerializeField] private Vector2 maxMovementSpeeds;
     [SerializeField] private Vector2 rotationSpeeds;
     [Header("Misc")]
-    private float currentSpeed;
-    private float rotationSpeed;
     private float maxSpeedThreshold;
-    private Vector2 direction;
 
     private void Start()
     {
+        if (!player) player = GetComponent<PlayerManager>();
         if (!rigidBody) rigidBody = GetComponent<Rigidbody2D>();
-        currentSpeed = 0;
-        rotationSpeed = rotationSpeeds.x;
+        player.setCurrentSpeed(0);
+        player.setRotationspeed(rotationSpeeds.x);
         maxSpeedThreshold = maxMovementSpeeds.x;
     }
 
     void Update()
     {
         // get movement data
-        direction = Utils.Instance.getDirection(transform.eulerAngles.z + 90);
-        currentSpeed = rigidBody.velocity.magnitude;
+        player.setDirection(Utils.Instance.getDirection(transform.eulerAngles.z + 90));
+        player.setCurrentSpeed(rigidBody.velocity.magnitude);
 
         // speed control 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             // set high speed
             maxSpeedThreshold = maxMovementSpeeds.y;
-            rotationSpeed = rotationSpeeds.y;
+            player.setRotationspeed(rotationSpeeds.y);
         } else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             // set default speed
             maxSpeedThreshold = maxMovementSpeeds.x;
-            rotationSpeed = rotationSpeeds.x;
+            player.setRotationspeed(rotationSpeeds.x);
         }
 
         // direction control 
         if (Input.GetKey(KeyCode.Z))
         {
             // go forward
-            if (currentSpeed == 0)
+            if (player.getCurrentSpeed() == 0)
             {
                 //Debug.Log("ignition");
-                rigidBody.AddRelativeForce(direction * 100 * Time.deltaTime);
+                rigidBody.AddRelativeForce(player.getDirection() * 100 * Time.deltaTime);
             } else {
 
                 //Debug.Log("Multiplication");
-                currentSpeed = currentSpeed * 2;
+                player.setCurrentSpeed(player.getCurrentSpeed() * 2);
             }
         }
 
         if (Input.GetKey(KeyCode.S))
         {
             // go backward
-            currentSpeed = currentSpeed / 2;
+            player.setCurrentSpeed(player.getCurrentSpeed() / 2);
         }
 
         if (Input.GetKey(KeyCode.Q))
         {
             // rotate left
-            transform.Rotate(Vector3.forward * (rotationSpeed * Time.deltaTime));
+            transform.Rotate(Vector3.forward * (player.getRotationSpeed() * Time.deltaTime));
         }
 
         if (Input.GetKey(KeyCode.D))
         {
             // rotate right
-            transform.Rotate(Vector3.back * (rotationSpeed * Time.deltaTime));
+            transform.Rotate(Vector3.back * (player.getRotationSpeed() * Time.deltaTime));
         }
 
         // speed modifications
-        if (currentSpeed > maxSpeedThreshold) currentSpeed = maxSpeedThreshold;
+        if (player.getCurrentSpeed() > maxSpeedThreshold) player.setCurrentSpeed(maxSpeedThreshold);
 
         // apply speed
-        rigidBody.velocity = direction * currentSpeed;
+        rigidBody.velocity = player.getDirection() * player.getCurrentSpeed();
     }
 }
