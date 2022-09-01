@@ -17,7 +17,6 @@ public class Sheep : MonoBehaviour
     [SerializeField] private Transform player;
     [Header("Movement variables")]
     [SerializeField] private int speed;
-    [SerializeField] private int rotationSpeed;
     [SerializeField] private int targetAngleSpan;
     [SerializeField] private float maxSpeed;
     private float currentSpeed;
@@ -68,12 +67,15 @@ public class Sheep : MonoBehaviour
         switch(state)
         {
             case SheepState.Fleeing:
+
+                // stop eventual idle movement
+                StopCoroutine("idleMovement");
+
                 float relativePlayerAngularPosition = getPlayerAngularPosition();
                 Quaternion targetRotation = getFleeTarget(relativePlayerAngularPosition);
 
                 // rotation
-                float rotationStep = rotationSpeed * Time.deltaTime;
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationStep);
+                transform.rotation = targetRotation;
 
                 // go faster if not rotating
                 if (transform.rotation.eulerAngles.z - targetRotation.eulerAngles.z <= targetAngleSpan)
