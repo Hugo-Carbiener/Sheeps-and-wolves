@@ -7,7 +7,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Components")]
     [SerializeField] private PlayerManager player;
     [SerializeField] private Rigidbody2D rigidBody;
+    [SerializeField] private SpriteManager spriteManager;
     [Header("Speeds")]
+    [SerializeField] private float minMovementSpeed;
     [SerializeField] private Vector2 maxMovementSpeeds;
     [SerializeField] private Vector2 rotationSpeeds;
     [Header("Misc")]
@@ -17,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!player) player = GetComponent<PlayerManager>();
         if (!rigidBody) rigidBody = GetComponent<Rigidbody2D>();
+        if (!spriteManager) spriteManager = GetComponentInChildren<SpriteManager>();
         player.setCurrentSpeed(0);
         player.setRotationspeed(rotationSpeeds.x);
         maxSpeedThreshold = maxMovementSpeeds.x;
@@ -34,24 +37,25 @@ public class PlayerMovement : MonoBehaviour
             // set high speed
             maxSpeedThreshold = maxMovementSpeeds.y;
             player.setRotationspeed(rotationSpeeds.y);
+            spriteManager.startRunEvent.Invoke();
         } else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             // set default speed
             maxSpeedThreshold = maxMovementSpeeds.x;
             player.setRotationspeed(rotationSpeeds.x);
+            spriteManager.startWalkEvent.Invoke();
         }
 
         // direction control 
         if (Input.GetKey(KeyCode.Z))
         {
             // go forward
+            spriteManager.startWalkEvent.Invoke();
+            
             if (player.getCurrentSpeed() == 0)
             {
-                //Debug.Log("ignition");
                 rigidBody.AddRelativeForce(player.getDirection() * 100 * Time.deltaTime);
             } else {
-
-                //Debug.Log("Multiplication");
                 player.setCurrentSpeed(player.getCurrentSpeed() * 2);
             }
         }
@@ -59,7 +63,15 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.S))
         {
             // go backward
-            player.setCurrentSpeed(player.getCurrentSpeed() / 2);
+
+            if (player.getCurrentSpeed() <= minMovementSpeed)
+            {
+                player.setCurrentSpeed(0);
+                spriteManager.startIdleEvent.Invoke();
+            } else
+            {
+                player.setCurrentSpeed(player.getCurrentSpeed() / 2);
+            }
         }
 
         if (Input.GetKey(KeyCode.Q))
