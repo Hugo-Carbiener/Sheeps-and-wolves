@@ -16,7 +16,6 @@ public class Sheep : MonoBehaviour
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private Transform player;
     [Header("Movement variables")]
-    [SerializeField] private int speed;
     [SerializeField] private int targetAngleSpan;
     [SerializeField] private float maxSpeed;
     private float currentSpeed;
