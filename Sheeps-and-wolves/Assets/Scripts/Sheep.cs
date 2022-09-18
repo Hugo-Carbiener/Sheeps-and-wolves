@@ -96,7 +96,6 @@ public class Sheep : MonoBehaviour
                     if (currentRandomEvent < currentProbability)
                     {
                         // play the idle movement
-                        Debug.Log("startCoroutine");
                         StartCoroutine("idleMovement");
                         currentProbability = 1;
                     } else {
@@ -140,7 +139,6 @@ public class Sheep : MonoBehaviour
 
         float elapsedTime = 0f;
         float idleMovementDuration = Random.Range(minIdleMovementDuration, maxIdleMovementDuration);
-        Debug.Log(idleMovementDuration);
         while (elapsedTime < idleMovementDuration)
         {
             rigidBody.velocity = direction * maxSpeed;
