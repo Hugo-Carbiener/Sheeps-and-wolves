@@ -10,9 +10,6 @@
 /Sheeps-and-wolves/[Ll]ogs/
 /Sheeps-and-wolves/[Mm]emoryCaptures/
 
-# Asset meta data should only be ignored when the corresponding asset is also ignored
-!/Sheeps-and-wolves/[Aa]ssets/**/*.meta
-
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /Sheeps-and-wolves/[Aa]ssets/AssetStoreTools*
 
