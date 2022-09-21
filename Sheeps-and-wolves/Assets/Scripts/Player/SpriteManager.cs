@@ -28,19 +28,16 @@ public class SpriteManager: MonoBehaviour
 
     private void startIdleAnimation()
     {
-        Debug.Log("start idle");
         anim.SetTrigger("IdleTrigger");
     }
 
     private void startWalkAnimation()
     {
-        Debug.Log("start walk");
         anim.SetTrigger("WalkTrigger");
     }
 
     private void startRunAnimation()
     {
-        Debug.Log("start run");
         anim.SetTrigger("RunTrigger");
     }
 
