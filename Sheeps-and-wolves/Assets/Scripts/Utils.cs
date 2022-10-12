@@ -15,10 +15,16 @@ public class Utils : MonoBehaviour
         Instance = this;
     }
 
-    // angle utils
-    public Vector2 getDirection(float degAngle)
+    // turns an angle into a vector
+    public Vector2 GetDirectionFromAngle(float degAngle)
     {
         return new Vector2(Mathf.Cos(degAngle / 180 * Mathf.PI), Mathf.Sin(degAngle / 180 * Mathf.PI));
+    }
+
+    // turns a vector into an angle
+    public float GetAngleFromVector(Vector2 vec)
+    {
+        return Mathf.Atan2(vec.x, vec.y) * Mathf.Rad2Deg;
     }
 
     // normalize an angle if out of bounds

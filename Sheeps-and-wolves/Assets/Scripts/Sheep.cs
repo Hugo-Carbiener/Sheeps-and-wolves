@@ -6,7 +6,8 @@ using UnityEngine;
 public enum SheepState
 {
     Idle,
-    Fleeing
+    Fleeing,
+    Focused
 }
 
 public class Sheep : MonoBehaviour
@@ -31,6 +32,9 @@ public class Sheep : MonoBehaviour
     private int currentRandomEvent;
     private float currentProbability;
 
+    [Header("Enforced movement")]
+    [SerializeField] private float destinationReachThreshold;
+
     private SheepState state;
 
     void Start()
@@ -49,22 +53,27 @@ public class Sheep : MonoBehaviour
     void Update()
     {
         // get movement data
-        direction = Utils.Instance.getDirection(transform.eulerAngles.z + 90);
+        direction = Utils.Instance.GetDirectionFromAngle(transform.eulerAngles.z + 90);
         currentSpeed = rigidBody.velocity.magnitude;
 
-        // process sheep state 
-        if ((transform.position - player.position).magnitude <= playerFleeRange && state != SheepState.Fleeing)
+        // if we do not enforce the sheeps movement
+        if (state != SheepState.Focused)
         {
-            state = SheepState.Fleeing;
-        } else if ((transform.position - player.position).magnitude > playerFleeRange)
-        {
-            // stops the sheep at the end of the flee
-            if (state != SheepState.Idle)
+            // process sheep state 
+            if ((transform.position - player.position).magnitude <= playerFleeRange && state != SheepState.Fleeing)
             {
-                rigidBody.velocity = Vector3.zero;
-                currentSpeed = 0;
+                state = SheepState.Fleeing;
             }
-            state = SheepState.Idle;
+            else if ((transform.position - player.position).magnitude > playerFleeRange)
+            {
+                // stops the sheep at the end of the flee
+                if (state != SheepState.Idle)
+                {
+                    rigidBody.velocity = Vector3.zero;
+                    currentSpeed = 0;
+                }
+                state = SheepState.Idle;
+            }
         }
 
         switch(state)
@@ -111,6 +120,31 @@ public class Sheep : MonoBehaviour
 
         UpdateAnimations();
     }
+    
+    public void MoveTo(Vector2 target)
+    {
+        StartCoroutine(EnforceDeplacement(target));
+    }
+
+    public IEnumerator EnforceDeplacement(Vector2 target)
+    {
+        // set sheep state
+        state = SheepState.Focused;
+        currentSpeed = maxSpeed;
+        
+        Vector2 sheepPosition = transform.position;
+        Vector2 movementDirection = target - sheepPosition;
+        transform.rotation = Quaternion.Euler(0, 0, Utils.Instance.GetAngleFromVector(movementDirection));
+        rigidBody.velocity = currentSpeed * movementDirection;
+
+        while (Vector2.Distance(sheepPosition, target) >= destinationReachThreshold)
+        {
+            yield return null;
+        }
+        rigidBody.velocity = Vector2.zero;
+        state = SheepState.Idle;
+    }
+
     private void UpdateAnimations()
     {
         if (currentSpeed == 0)
@@ -149,7 +183,7 @@ public class Sheep : MonoBehaviour
 
         int rdAngle = Random.Range(0, 360);
         transform.rotation = Quaternion.Euler(0, 0, rdAngle);
-        direction = Utils.Instance.getDirection(transform.eulerAngles.z + 90);
+        direction = Utils.Instance.GetDirectionFromAngle(transform.eulerAngles.z + 90);
 
         float elapsedTime = 0f;
         float idleMovementDuration = Random.Range(minIdleMovementDuration, maxIdleMovementDuration);

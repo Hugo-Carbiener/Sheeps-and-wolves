@@ -21,7 +21,6 @@ public class SpriteManager: MonoBehaviour
     private void Update()
     {
         transform.eulerAngles = Vector3.zero;
-        Debug.Log(transform.parent.transform.eulerAngles.z);
         anim.SetFloat("rotationAngle", transform.parent.transform.eulerAngles.z);
     }
 

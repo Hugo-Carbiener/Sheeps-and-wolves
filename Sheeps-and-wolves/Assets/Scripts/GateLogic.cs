@@ -16,7 +16,6 @@ public class GateLogic : MonoBehaviour
     private void Awake()
     {
         tilemap = GetComponent<Tilemap>();
-        Debug.Log(tilemap.cellBounds.ToString());
         grid = tilemap.transform.parent.GetComponent<Grid>();
         interactingGateTiles = new List<GateTile>();
         interactingTilePositions = new List<Vector3Int>();
@@ -54,7 +53,6 @@ public class GateLogic : MonoBehaviour
 
         if (tile)
         {
-        Debug.Log("Enter");
             interactingGateTiles.Add((GateTile)tile);
             interactingTilePositions.Add(tilePos);
 

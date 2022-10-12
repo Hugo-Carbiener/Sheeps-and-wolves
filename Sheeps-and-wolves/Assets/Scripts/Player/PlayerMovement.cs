@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         // get movement data
-        player.setDirection(Utils.Instance.getDirection(transform.eulerAngles.z + 90));
+        player.setDirection(Utils.Instance.GetDirectionFromAngle(transform.eulerAngles.z + 90));
         player.setCurrentSpeed(rigidBody.velocity.magnitude);
 
         // speed control 

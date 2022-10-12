@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7950564396579769824}
   m_Layer: 0
   m_Name: Sheep
-  m_TagString: Untagged
+  m_TagString: Sheep
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -87,12 +87,13 @@ MonoBehaviour:
   rigidBody: {fileID: 6110555320944486493}
   player: {fileID: 0}
   spriteManager: {fileID: 0}
-  playerFleeRange: 4
+  playerFleeRange: 2
   targetAngleSpan: 10
   maxSpeed: 2
   minIdleMovementDuration: 0.1
   maxIdleMovementDuration: 1
   probabilityIncreaseRate: 5
+  destinationReachThreshold: 0
 --- !u!1 &6517803387097813028
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,7 +210,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 1400614347, guid: f5b76ee5e36de554b845ec7539ce6e97, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
