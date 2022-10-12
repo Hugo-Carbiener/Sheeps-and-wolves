@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4270088339600373555}
   - component: {fileID: 4270088339600373553}
   - component: {fileID: 4270088339600373552}
-  - component: {fileID: 4270088339600373566}
+  - component: {fileID: 41068244849135218}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -84,12 +84,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 4270088339600373553}
   rigidBody: {fileID: 4270088339600373555}
-  spriteManager: {fileID: 0}
+  spriteManager: {fileID: 4270088341046372230}
   minMovementSpeed: 1
   maxMovementSpeeds: {x: 2, y: 4}
   rotationSpeeds: {x: 90, y: 135}
---- !u!58 &4270088339600373566
-CircleCollider2D:
+--- !u!70 &41068244849135218
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -101,9 +101,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.43
+  m_Offset: {x: -0.040379163, y: -0.16334648}
+  m_Size: {x: 0.8017866, y: 0.5044626}
+  m_Direction: 1
 --- !u!1 &4270088341046372280
 GameObject:
   m_ObjectHideFlags: 0
