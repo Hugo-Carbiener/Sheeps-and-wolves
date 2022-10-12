@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraRotation : MonoBehaviour
 {
     [SerializeField] private GameObject player;
+    [SerializeField] private Vector3 offset;
 
     private void Awake()
     {
@@ -12,6 +13,6 @@ public class CameraRotation : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        transform.position = player.transform.position + new Vector3(0, 0, -10);
+        transform.position = player.transform.position + offset;
     }
 }

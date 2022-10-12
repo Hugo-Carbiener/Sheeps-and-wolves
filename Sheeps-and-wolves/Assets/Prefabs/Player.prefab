@@ -222,7 +222,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d3f0bc4e8a0072449cdfb1822b8d704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 4270088339600373553}
   anim: {fileID: 4270088341046372231}
   startIdleEvent:
     m_PersistentCalls:
