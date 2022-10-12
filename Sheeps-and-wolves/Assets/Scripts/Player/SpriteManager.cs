@@ -5,7 +5,6 @@ using UnityEngine.Events;
 public class SpriteManager: MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] private PlayerManager player;
     [SerializeField] private Animator anim;
     public UnityEvent startIdleEvent;
     public UnityEvent startWalkEvent;
@@ -13,7 +12,6 @@ public class SpriteManager: MonoBehaviour
 
     private void Start()
     {
-        if (!player) player = transform.parent.GetComponent<PlayerManager>();
         if (!anim) anim = GetComponent<Animator>();
         startIdleEvent.AddListener(startIdleAnimation);
         startWalkEvent.AddListener(startWalkAnimation);
@@ -23,7 +21,7 @@ public class SpriteManager: MonoBehaviour
     private void Update()
     {
         transform.eulerAngles = Vector3.zero;
-        anim.SetFloat("rotationAngle", player.getRotationAngle());
+        anim.SetFloat("rotationAngle", transform.eulerAngles.z);
     }
 
     private void startIdleAnimation()

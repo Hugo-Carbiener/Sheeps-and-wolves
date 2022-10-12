@@ -12,14 +12,17 @@ public enum SheepState
 public class Sheep : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] private int playerFleeRange;
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private Transform player;
+    [SerializeField] private SpriteManager spriteManager;
+
     [Header("Movement variables")]
+    [SerializeField] private int playerFleeRange;
     [SerializeField] private int targetAngleSpan;
     [SerializeField] private float maxSpeed;
     private float currentSpeed;
     private Vector2 direction;
+
     [Header("Idle movement")]
     [SerializeField] private float minIdleMovementDuration;
     [SerializeField] private float maxIdleMovementDuration;
@@ -34,6 +37,7 @@ public class Sheep : MonoBehaviour
     {
         if (!rigidBody) rigidBody = GetComponent<Rigidbody2D>();
         if (!player) player = GameObject.FindGameObjectWithTag("Player").transform;
+        if (!spriteManager) spriteManager = GetComponentInChildren<SpriteManager>();
 
         isIdleMoving = false;
         state = SheepState.Idle;
@@ -105,7 +109,17 @@ public class Sheep : MonoBehaviour
                 break;
         }
 
-        
+        UpdateAnimations();
+    }
+    private void UpdateAnimations()
+    {
+        if (currentSpeed == 0)
+        {
+            spriteManager.startIdleEvent.Invoke();
+        } else
+        {
+            spriteManager.startWalkEvent.Invoke();
+        }
     }
    
     /**
